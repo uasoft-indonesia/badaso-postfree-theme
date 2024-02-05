@@ -2,6 +2,7 @@ import Alpine from "alpinejs";
 
 function fetchData() {
   return {
+    token: localStorage.token,
     content: null,
     slug: ["postfree-theme"],
     posts: [],
@@ -14,6 +15,7 @@ function fetchData() {
     header: {},
     footer: "",
     thumbnail: null,
+    comments: null,
 
     themeContent() {
       fetch(`/badaso-api/module/content/v1/content/fetch?slug=${this.slug[0]}`)
@@ -36,6 +38,25 @@ function fetchData() {
           this.posts = data.data.posts;
           this.publishAt = this.posts.data[0].publishedAt;
           this.thumbnail = this.posts.data[0].thumbnail;
+        });
+    },
+    commentContent() {
+      fetch(
+        `/badaso-api/module/post/v1/comment/post?slug=${this.slug[0]}&page=1&per_page=10&sort=desc`,
+        {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data, "comment");
+        //   this.comments = data.data.comments.data;
+
         });
     },
 
