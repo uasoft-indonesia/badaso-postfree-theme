@@ -16,6 +16,8 @@ function fetchData() {
     footer: "",
     thumbnail: null,
     comments: null,
+    postId: null,
+    postSlug: "",
 
     themeContent() {
       fetch(`/badaso-api/module/content/v1/content/fetch?slug=${this.slug[0]}`)
@@ -38,27 +40,31 @@ function fetchData() {
           this.posts = data.data.posts;
           this.publishAt = this.posts.data[0].publishedAt;
           this.thumbnail = this.posts.data[0].thumbnail;
-        });
-    },
-    commentContent() {
-      fetch(
-        `/badaso-api/module/post/v1/comment/post?slug=${this.slug[0]}&page=1&per_page=10&sort=desc`,
-        {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data, "comment");
-        //   this.comments = data.data.comments.data;
+          this.postId = this.posts.data[0].id;
+          this.postSlug = this.posts.data[0].slug;
 
+          const inputPostIdIdElements = document.querySelectorAll(
+            'input[name="post_id"]'
+          );
+          for (const inputPostIdIdElement of inputPostIdIdElements) {
+            inputPostIdIdElement.setAttribute("value", this.postId);
+          }
+
+          const inputSlugPostIdElements = document.querySelectorAll(
+            'input[name="slug_post"]'
+          );
+          for (const inputSlugPostIdElement of inputSlugPostIdElements) {
+            inputSlugPostIdElement.setAttribute("value", this.postSlug);
+          }
+
+          //   this.fetchComments();
         });
     },
+
+    // fetchComments() {
+    //   let slug = this.postSlug;
+    //   fetchComment(slug).allComment();
+    // },
 
     postfreeConfiguration() {
       fetch(`/badaso-api/v1/configurations/fetch`)
@@ -90,6 +96,76 @@ function fetchData() {
     },
   };
 }
+
+function fetchComment(slug) {
+  return {
+    token: localStorage.token,
+    comments: null,
+
+    allComment() {
+      fetch(
+        `/badaso-api/module/post/v1/comment/post?slug=${slug}&page=1&per_page=10&sort=desc`,
+        {
+          method: "GET",
+          headers: new Headers({
+            Authorization: "bearer " + this.token,
+          }),
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          this.comments = data.data.comments.data;
+        });
+    },
+  };
+}
+
+function addComment(postId, content, userId) {
+  let token = localStorage.token;
+
+  fetch(`/badaso-api/module/post/v1/comment/add`, {
+    method: "POST",
+    headers: new Headers({
+      Authorization: "bearer " + token,
+      "Content-type": "application/json; charset=UTF-8",
+    }),
+    body: JSON.stringify({
+      postId: postId,
+      content: content,
+      userId: userId,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.errors == null) {
+        document.getElementById("comment_text").innerHTML = "";
+        location.reload();
+      }
+    });
+}
+
+function comments() {
+  let commentText = document.getElementById("comment_text").value;
+  let token = localStorage.token;
+  fetch("/badaso-api/v1/auth/user", {
+    method: "GET",
+    headers: new Headers({
+      Authorization: "bearer " + token,
+    }),
+  }).then((res) => {
+    if (res.status === 200) {
+      const post_id = document.getElementById("postId").value;
+      const user_id = document.getElementById("userId").value;
+      addComment(post_id, commentText, user_id);
+    }
+    if (res.status == 400) {
+       document
+         .getElementById("modal_login")
+         .setAttribute("class", "modal modal-open");
+    }
+  });
+}
+
 function formatDateTime(sDate, FormatType) {
   var lDate = new Date(sDate);
   var month = new Array(12);
@@ -191,6 +267,8 @@ function fetchAuthenticated() {
       token: "",
     },
     buttonLabel: "Register",
+    userId: null,
+    show: true,
 
     userAuth() {
       fetch("/badaso-api/v1/auth/user", {
@@ -199,7 +277,6 @@ function fetchAuthenticated() {
           Authorization: "bearer " + this.token,
         }),
       }).then((response) => {
-        console.log(response, "res");
         if (response.status == 400) {
           document.getElementById("logout_desktop").style.display = "none";
         }
@@ -208,6 +285,25 @@ function fetchAuthenticated() {
           document.getElementById("register_desktop").style.display = "none";
         }
       });
+    },
+    fetchUser() {
+      fetch("/badaso-api/v1/auth/user", {
+        method: "GET",
+        headers: new Headers({
+          Authorization: "bearer " + this.token,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          this.userId = data.data.user.id;
+
+          const inputUserIdIdElements = document.querySelectorAll(
+            'input[name="id_user"]'
+          );
+          for (const inputUserIdIdElement of inputUserIdIdElements) {
+            inputUserIdIdElement.setAttribute("value", this.userId);
+          }
+        });
     },
 
     userLogin() {
@@ -230,6 +326,7 @@ function fetchAuthenticated() {
             document.getElementById("logout_desktop").style.display = "inherit";
             document.getElementById("login_desktop").style.display = "none";
             document.getElementById("register_desktop").style.display = "none";
+            location.reload();
           }
         });
     },
@@ -246,6 +343,7 @@ function fetchAuthenticated() {
           document.getElementById("register_desktop").style.display = "inherit";
           document.getElementById("logout_desktop").style.display = "none";
           document.getElementById("modal_close").setAttribute("class", "modal");
+          location.reload();
         }
         if (response.status == 400) {
           document.getElementById("logout_desktop").style.display = "none";
@@ -288,44 +386,46 @@ function fetchAuthenticated() {
             document
               .getElementById("modal_verify")
               .setAttribute("class", "modal modal-open");
-            document.getElementById("email_user").innerHTML =
-              window.localStorage.getItem("email");
+
           }
         });
     },
     userVerify() {
-          let email = localStorage.getItem("email");
+      let email = localStorage.getItem("email");
 
-          fetch("/badaso-api/v1/auth/verify", {
-            method: "POST",
-            headers: {
-              Accept: "application/json, text/plain, */*",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email,
-              token: this.formVerify.token,
-            }),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.errors == null) {
-                this.formVerify.email = "";
-                this.formVerify.token = "";
-                localStorage.setItem("token", data.data.accessToken);
-                document
-                  .getElementById("modal_verify")
-                  .setAttribute("class", "modal");
-              }
-            });
+      fetch("/badaso-api/v1/auth/verify", {
+        method: "POST",
+        headers: {
+          Accept: "application/json, text/plain, */*",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          token: this.formVerify.token,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.errors == null) {
+            this.formVerify.email = "";
+            this.formVerify.token = "";
+            localStorage.setItem("token", data.data.accessToken);
+            document
+              .getElementById("modal_verify")
+              .setAttribute("class", "modal");
+            location.reload();
+          }
+        });
     },
 
     loginActive() {
+      document.getElementById("modal_register").setAttribute("class", "modal");
       document
         .getElementById("modal_login")
         .setAttribute("class", "modal modal-open");
     },
     registerActive() {
+      document.getElementById("modal_login").setAttribute("class", "modal");
       document
         .getElementById("modal_register")
         .setAttribute("class", "modal modal-open");
@@ -360,6 +460,9 @@ function scrollFunction() {
 window.fetchData = fetchData;
 window.formatDateTime = formatDateTime;
 window.fetchAuthenticated = fetchAuthenticated;
+window.fetchComment = fetchComment;
+window.addComment = addComment;
+window.comments = comments;
 
 window.Alpine = Alpine;
 Alpine.start();

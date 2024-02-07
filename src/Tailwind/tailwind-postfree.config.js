@@ -32,7 +32,7 @@ module.exports = {
     center: false,
     screens: {
       DEFAULT: "80%",
-      sm: "640px",
+      sm: "360px",
       md: "768px",
       lg: "1024px",
       lx: "1200px",

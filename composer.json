@@ -24,7 +24,8 @@
   "require": {
     "symfony/var-exporter": "*",
     "badaso/content-module": "dev-main",
-    "badaso/core": "^2.9"
+    "badaso/core": "^2.9",
+    "badaso/post-module": "^2.2"
   },
   "authors": [
     {

@@ -24,9 +24,10 @@ class PostfreeThemeContentsSeeder extends Seeder
                 0 => [
                     'slug' => 'postfree-theme',
                     'label' => 'Postfree Theme',
-                    'value' => '{
-
-                    }'
+                    'value' =>
+                    '{"title":{"name":"title","label":"Title","type":"group","data":{"heading":{"name":"heading","label":"Heading","type":"text","data":"Daftar harga hp asus terbaru"},"subheading":{"name":"subheading","label":"SubHeading","type":"text","data":"Daftar harga hp asus terbaru dan paling update"}}},"footer":{"name":"footer","label":"Footer","type":"text","data":"Designed and Developed by  UASOFT © 2024"}}',
+                    'created_at' => '2024-01-30 06:16:40',
+                    'updated_at' => '2024-01-31 06:25:22',
                 ],
             ];
 

@@ -88,7 +88,6 @@ class PostfreeThemeSetup extends Command
     {
         return [
             'POSTFREE_THEME_PREFIX' => 'postfree',
-            'POSTFREE_MAIL_RECEIVER' =>'',
         ];
     }
 

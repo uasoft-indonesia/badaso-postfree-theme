@@ -12,13 +12,12 @@
             <ul class="steps">
                 <li class="step step-neutral text-xs">Register</li>
                 <li class="step step-neutral text-xs">Verify</li>
-                <li class="step text-xs">Finish</li>
             </ul>
         </div>
 
         <form action="" x-data="fetchAuthenticated()" @submit.prevent="userVerify()">
             <div class="flex justify-center mt-4">
-                <span id="email_user" class="text-base"></span>
+                {{-- <span id="email_user" class="text-base"></span> --}}
                 <input type="text" placeholder="Verification code"
                     class="input input-bordered w-full max-w-xs rounded" x-model="formVerify.token" />
             </div>

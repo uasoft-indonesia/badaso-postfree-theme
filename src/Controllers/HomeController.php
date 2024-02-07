@@ -16,6 +16,7 @@ class HomeController extends Controller
         $data_json = Post::where('category_id', $category['id'])->get();
         $title = $data_json[0]->title;
         $content = $data_json[0]->content;
+        $slug = $data_json[0]->slug;
 
         $config = Configurations::index();
         $sitetitle = $config->siteTitle;
@@ -24,6 +25,9 @@ class HomeController extends Controller
             'title' => $title,
             'content' => $content,
             'sitetitle' => $sitetitle,
+            'slug' => $slug,
         ]);
     }
+
+
 }

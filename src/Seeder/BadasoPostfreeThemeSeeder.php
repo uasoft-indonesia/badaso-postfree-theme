@@ -18,5 +18,6 @@ class BadasoPostfreeThemeSeeder extends Seeder
         $this->call(PostfreeThemePermissionsSeeder::class);
         $this->call(PostfreeThemeContentsSeeder::class);
         $this->call(PostfreeThemeConfigurationsSeeder::class);
+        $this->call(PostfreeThemeRolePermissionSeeder::class);
     }
 }
