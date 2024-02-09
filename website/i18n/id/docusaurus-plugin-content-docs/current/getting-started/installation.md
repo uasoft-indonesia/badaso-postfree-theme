@@ -66,6 +66,11 @@ sidebar_position: 1
     MIX_BADASO_MENU=${MIX_DEFAULT_MENU},content-module,post-module,postfree-theme
     ```
 
+1. Mengisi variabel lain pada file .env.
+    ```
+    `POSTFREE_THEME_PREFIX=postfree` Tetapkan awalan untuk tema.
+    ```
+
 1. Install JS depedency
     ```
     npm install
