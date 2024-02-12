@@ -15,9 +15,14 @@ function fetchData() {
     header: {},
     footer: "",
     thumbnail: null,
-    comments: null,
     postId: null,
     postSlug: "",
+
+    formComment: {
+      guestName: "",
+      guestEmail: "",
+      content: "",
+    },
 
     themeContent() {
       fetch(`/badaso-api/module/content/v1/content/fetch?slug=${this.slug[0]}`)
@@ -94,6 +99,28 @@ function fetchData() {
           favicon.href = this.favicon;
         });
     },
+
+    newComment() {
+      const post_id = document.getElementById("postId").value;
+      fetch(`/badaso-api/module/post/v1/comment/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postId: post_id,
+          guestName: this.formComment.guestName,
+          guestEmail: this.formComment.guestEmail,
+          content: this.formComment.content,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.errors == null) {
+            location.reload();
+          }
+        });
+    },
   };
 }
 
@@ -115,6 +142,7 @@ function fetchComment(slug) {
         .then((res) => res.json())
         .then((data) => {
           this.comments = data.data.comments.data;
+          console.log(this.comments, "com")
         });
     },
   };
@@ -158,13 +186,14 @@ function comments() {
       const user_id = document.getElementById("userId").value;
       addComment(post_id, commentText, user_id);
     }
-    if (res.status == 400) {
-       document
-         .getElementById("modal_login")
-         .setAttribute("class", "modal modal-open");
-    }
+    // if (res.status == 400) {
+    //    document
+    //      .getElementById("modal_login")
+    //      .setAttribute("class", "modal modal-open");
+    // }
   });
 }
+
 
 function formatDateTime(sDate, FormatType) {
   var lDate = new Date(sDate);
@@ -269,6 +298,7 @@ function fetchAuthenticated() {
     buttonLabel: "Register",
     userId: null,
     show: true,
+    status:null,
 
     userAuth() {
       fetch("/badaso-api/v1/auth/user", {
@@ -277,6 +307,7 @@ function fetchAuthenticated() {
           Authorization: "bearer " + this.token,
         }),
       }).then((response) => {
+        this.status = response.status;
         if (response.status == 400) {
           document.getElementById("logout_desktop").style.display = "none";
         }
