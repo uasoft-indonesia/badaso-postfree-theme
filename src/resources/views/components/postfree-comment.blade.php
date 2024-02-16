@@ -64,7 +64,7 @@
                           x-model="formComment.content"></textarea>
                   </div>
                   <div class="flex justify-end">
-                      <button class="btn btn-sm bg-sky-500" type="submit">
+                      <button class="btn btn-sm bg-sky-500 border-0" type="submit">
                           <span class="text-sm text-white">Post Comment</span>
                       </button>
                   </div>
@@ -85,7 +85,7 @@
               <textarea placeholder="Enter your comment" class="textarea textarea-bordered w-full border-solid" id="comment_text"></textarea>
           </div>
           <div class="place-self-end">
-              <button class="btn btn-sm bg-sky-500 text-white" x-on:click="comments()">
+              <button class="btn btn-sm bg-sky-500 text-white border-0" x-on:click="comments()">
                   Post Comment
               </button>
           </div>

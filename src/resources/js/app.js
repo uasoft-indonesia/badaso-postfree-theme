@@ -142,7 +142,6 @@ function fetchComment(slug) {
         .then((res) => res.json())
         .then((data) => {
           this.comments = data.data.comments.data;
-          console.log(this.comments, "com")
         });
     },
   };
@@ -186,11 +185,7 @@ function comments() {
       const user_id = document.getElementById("userId").value;
       addComment(post_id, commentText, user_id);
     }
-    // if (res.status == 400) {
-    //    document
-    //      .getElementById("modal_login")
-    //      .setAttribute("class", "modal modal-open");
-    // }
+
   });
 }
 
