@@ -13,7 +13,7 @@
         </div>
         <div class="flex justify-between w-full max-w-xs ml-[70px] mr-[70px] justify-between  mt-4">
             <div>
-                <button class="btn btn-error btn-sm rounded w-full max-w-xs text-white" x-data="fetchAuthenticated()" x-on:click="userLogOut()">Yes</button>
+                <button class="btn btn-error btn-sm rounded w-full max-w-xs text-white"  x-on:click="userLogOut()">Yes</button>
             </div>
             <div>
                 <button class="btn btn-warning btn-sm rounded w-full max-w-xs text-white"  x-on:click="modalActionClose()">Cancel</button>

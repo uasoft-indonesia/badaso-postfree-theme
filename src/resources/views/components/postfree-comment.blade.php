@@ -44,7 +44,7 @@
                       <div class="label">
                           <span class="label-text text-sm">Name</span>
                       </div>
-                      <input type="text" placeholder="Name"
+                      <input type="text" placeholder="Name" id="name_guest"
                           class="input input-bordered input-sm w-full max-w-xs rounded" x-model="formComment.guestName"
                           required />
                   </div>
@@ -52,7 +52,7 @@
                       <div class="label">
                           <span class="label-text text-sm">Email</span>
                       </div>
-                      <input type="text" placeholder="Email"
+                      <input type="text" placeholder="Email" id="email_guest"
                           class="input input-bordered input-sm w-full max-w-xs rounded" x-model="formComment.guestEmail"
                           required />
                   </div>
@@ -61,11 +61,11 @@
                           <span class="label-text text-sm">Comment</span>
                       </div>
                       <textarea placeholder="Enter your comment" class="textarea textarea-bordered w-full border-solid"
-                          x-model="formComment.content"></textarea>
+                          x-model="formComment.content" id="comment_guest"></textarea>
                   </div>
                   <div class="flex justify-end">
                       <button class="btn btn-sm bg-sky-500 border-0" type="submit">
-                          <span class="text-sm text-white">Post Comment</span>
+                          <span class="text-sm text-white capitalize">Post Comment</span>
                       </button>
                   </div>
 
@@ -85,7 +85,7 @@
               <textarea placeholder="Enter your comment" class="textarea textarea-bordered w-full border-solid" id="comment_text"></textarea>
           </div>
           <div class="place-self-end">
-              <button class="btn btn-sm bg-sky-500 text-white border-0" x-on:click="comments()">
+              <button class="btn btn-sm bg-sky-500 text-white border-0 capitalize" x-on:click="comments()">
                   Post Comment
               </button>
           </div>

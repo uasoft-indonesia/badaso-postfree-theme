@@ -75,7 +75,7 @@
                     <div class="flex justify-center">
                         <select class="select select-bordered select-sm w-full max-w-xs rounded"
                             x-model="formRegister.gender" required>
-                            <option disabled selected>Gender</option>
+                            <option >Select-Gender</option>
                             <option value="man">Male</option>
                             <option value="woman">Female</option>
                         </select>

@@ -117,7 +117,9 @@ function fetchData() {
         .then((response) => response.json())
         .then((data) => {
           if (data.errors == null) {
-            location.reload();
+            document.getElementById("name_guest").value = "";
+            document.getElementById("email_guest").value = "";
+            document.getElementById("comment_guest").value = "";
           }
         });
     },
@@ -165,8 +167,7 @@ function addComment(postId, content, userId) {
     .then((response) => response.json())
     .then((data) => {
       if (data.errors == null) {
-        document.getElementById("comment_text").innerHTML = "";
-        location.reload();
+        document.getElementById("comment_text").value = "";
       }
     });
 }
@@ -185,10 +186,8 @@ function comments() {
       const user_id = document.getElementById("userId").value;
       addComment(post_id, commentText, user_id);
     }
-
   });
 }
-
 
 function formatDateTime(sDate, FormatType) {
   var lDate = new Date(sDate);
@@ -293,7 +292,7 @@ function fetchAuthenticated() {
     buttonLabel: "Register",
     userId: null,
     show: true,
-    status:null,
+    status: null,
 
     userAuth() {
       fetch("/badaso-api/v1/auth/user", {
@@ -356,26 +355,7 @@ function fetchAuthenticated() {
           }
         });
     },
-    userLogOut() {
-      fetch("/badaso-api/v1/auth/user", {
-        method: "GET",
-        headers: new Headers({
-          Authorization: "bearer " + this.token,
-        }),
-      }).then((response) => {
-        if (response.status == 200) {
-          localStorage.clear();
-          document.getElementById("login_desktop").style.display = "inherit";
-          document.getElementById("register_desktop").style.display = "inherit";
-          document.getElementById("logout_desktop").style.display = "none";
-          document.getElementById("modal_close").setAttribute("class", "modal");
-          location.reload();
-        }
-        if (response.status == 400) {
-          document.getElementById("logout_desktop").style.display = "none";
-        }
-      });
-    },
+
     userRegister() {
       this.buttonLabel = "Submitting...";
       fetch("/badaso-api/v1/auth/register", {
@@ -399,20 +379,21 @@ function fetchAuthenticated() {
             this.formRegister.address = "";
             this.formRegister.gender = "";
 
-            document
-              .getElementById("modal_register")
-              .setAttribute("class", "modal");
-            document
-              .getElementById("modal_verify")
-              .setAttribute("class", "modal modal-open");
-            document.getElementById("logout_desktop").style.display = "inherit";
-            document.getElementById("login_desktop").style.display = "none";
-            document.getElementById("register_desktop").style.display = "none";
-
-            document
-              .getElementById("modal_verify")
-              .setAttribute("class", "modal modal-open");
-
+            if (data.data.accessToken) {
+              document
+                .getElementById("modal_register")
+                .setAttribute("class", "modal");
+              document
+                .getElementById("modal_login")
+                .setAttribute("class", "modal modal-open");
+            } else {
+              document
+                .getElementById("modal_register")
+                .setAttribute("class", "modal");
+              document
+                .getElementById("modal_verify")
+                .setAttribute("class", "modal modal-open");
+            }
           }
         });
     },
@@ -471,6 +452,28 @@ function fetchAuthenticated() {
   };
 }
 
+function userLogOut() {
+  let token = localStorage.token;
+  fetch("/badaso-api/v1/auth/user", {
+    method: "GET",
+    headers: new Headers({
+      Authorization: "bearer " + token,
+    }),
+  }).then((response) => {
+    if (response.status == 200) {
+      localStorage.clear();
+      document.getElementById("login_desktop").style.display = "inherit";
+      document.getElementById("register_desktop").style.display = "inherit";
+      document.getElementById("logout_desktop").style.display = "none";
+      document.getElementById("modal_close").setAttribute("class", "modal");
+      location.reload();
+    }
+    if (response.status == 400) {
+      document.getElementById("logout_desktop").style.display = "none";
+    }
+  });
+}
+
 window.onscroll = function () {
   scrollFunction();
 };
@@ -489,6 +492,7 @@ window.fetchAuthenticated = fetchAuthenticated;
 window.fetchComment = fetchComment;
 window.addComment = addComment;
 window.comments = comments;
+window.userLogOut = userLogOut;
 
 window.Alpine = Alpine;
 Alpine.start();
