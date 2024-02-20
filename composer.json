@@ -23,7 +23,7 @@
   "type": "library",
   "require": {
     "symfony/var-exporter": "*",
-    "badaso/content-module": "dev-main",
+    "badaso/content-module": "^2.1",
     "badaso/core": "^2.9",
     "badaso/post-module": "^2.2"
   },
