@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
+  "version": "0.1.0",
   "name": "badaso/postfree-theme",
-  "description": "Official theme for postfree system on badaso",
+  "description": "Official free theme for post module system on badaso",
   "keywords": [
     "laravel",
     "admin",
