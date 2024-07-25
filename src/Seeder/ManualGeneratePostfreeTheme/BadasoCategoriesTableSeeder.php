@@ -23,7 +23,7 @@ class BadasoCategoriesTableSeeder extends Seeder
 			\DB::table('badaso_categories')->insert(array (
                 0 =>
                 array (
-                    'id' => 2,
+                    'id' => 8,
                     'parent_id' => NULL,
                     'title' => 'Postfree',
                     'meta_title' => NULL,
