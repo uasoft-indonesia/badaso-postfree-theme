@@ -26,7 +26,7 @@ class BadasoPostsTableSeeder extends Seeder
                     'id' => 1,
                     'user_id' => 1,
                     'parent_id' => NULL,
-                    'category_id' => 2,
+                    'category_id' => 8,
                     'title' => 'Daftar Harga Hp iphone terbaru',
                     'slug' => 'daftar-harga-hp-asus-terbaru',
                     'meta_title' => NULL,
